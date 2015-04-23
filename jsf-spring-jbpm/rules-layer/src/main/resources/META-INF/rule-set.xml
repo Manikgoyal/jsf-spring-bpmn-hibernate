@@ -1,0 +1,6 @@
+<change-set xmlns='http://drools.org/drools-5.0/change-set'
+             xmlns:xs='http://www.w3.org/2001/XMLSchema-instance'>
+<add>
+	<resource source='classpath:SampleFile.bpmn' type='BPMN2' />
+</add>         
+</change-set>
