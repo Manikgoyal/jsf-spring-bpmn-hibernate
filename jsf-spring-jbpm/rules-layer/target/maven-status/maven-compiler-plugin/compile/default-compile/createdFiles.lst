@@ -1,3 +1,4 @@
-primefaces\spring\web\rules\JbpmUtil.class
 primefaces\spring\web\rules\JbpmUtilImpl.class
+primefaces\spring\web\rules\JbpmUtil.class
+primefaces\spring\web\workitems\NotificationTask.class
 primefaces\spring\web\rules\JbpmAPIUtil.class

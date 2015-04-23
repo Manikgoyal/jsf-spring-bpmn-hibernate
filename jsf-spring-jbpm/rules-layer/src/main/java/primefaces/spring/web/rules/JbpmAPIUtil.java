@@ -24,8 +24,10 @@ import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
 import org.jbpm.task.TaskService;
 import org.jbpm.task.service.TaskServiceSession;
 import org.jbpm.task.service.local.LocalTaskService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import primefaces.spring.web.workitems.NotificationTask;
 import bitronix.tm.TransactionManagerServices;
 
 @Component
@@ -48,7 +50,7 @@ public class JbpmAPIUtil {
 		if (ksession == null) {
 			ksession = JbpmAPIUtil.createKnowledgeSession(emf);
 		}
-
+	
 		return ksession;
 
 	}
@@ -72,7 +74,6 @@ public class JbpmAPIUtil {
 
 		JPAProcessInstanceDbLog log = new JPAProcessInstanceDbLog(
 				result.getEnvironment());
-
 		return result;
 	}
 
@@ -156,5 +157,18 @@ public class JbpmAPIUtil {
 		return new org.jbpm.task.service.TaskService(emf,
 				SystemEventListenerFactory.getSystemEventListener());
 	}
+	
+	
+	
+	
+	
+	public static void registerworkItemHandler(StatefulKnowledgeSession ksession){
+		System.out.println("inside Ksession");
+		
+		
+	}
 
 }
+
+
+

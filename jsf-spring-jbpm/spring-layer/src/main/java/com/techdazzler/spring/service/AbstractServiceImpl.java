@@ -7,12 +7,18 @@ import javax.naming.InitialContext;
 import javax.transaction.UserTransaction;
 
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.jbpm.task.Notification;
 import org.jbpm.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+
+
+
+import primefaces.spring.web.rules.JbpmAPIUtil;
 import primefaces.spring.web.rules.JbpmUtil;
+import primefaces.spring.web.workitems.NotificationTask;
 
 
 @Service
@@ -21,7 +27,8 @@ public class AbstractServiceImpl implements AbstractService{
 	@Autowired
 	JbpmUtil jbpmUtil;
 	String processName;
-	
+	@Autowired
+	NotificationTask notificationTask;
 	
 	@Override
 	public void configureKnowledgeBase() {
@@ -36,6 +43,7 @@ public class AbstractServiceImpl implements AbstractService{
 			UserTransaction ut = (UserTransaction) new InitialContext().lookup("java:comp/UserTransaction");
 			ut.begin();
 			StatefulKnowledgeSession ksession = primefaces.spring.web.rules.JbpmAPIUtil.getSession();
+			ksession.getWorkItemManager().registerWorkItemHandler("NotificationTask",notificationTask);
 			TaskService taskService = primefaces.spring.web.rules.JbpmAPIUtil.getTaskService();
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("Manik", "Megha");

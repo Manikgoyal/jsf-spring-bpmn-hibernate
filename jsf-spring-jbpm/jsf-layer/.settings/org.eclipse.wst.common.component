@@ -10,7 +10,7 @@
         <dependent-module archiveName="rules-layer-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/rules-layer/rules-layer">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <property name="context-root" value="jsf-layer"/>
         <property name="java-output-path" value="/jsf-layer/target/classes"/>
+        <property name="context-root" value="techdazzler"/>
     </wb-module>
 </project-modules>
