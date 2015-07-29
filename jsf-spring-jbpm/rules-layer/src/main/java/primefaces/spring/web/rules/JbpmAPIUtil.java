@@ -22,6 +22,7 @@ import org.jbpm.process.audit.JPAProcessInstanceDbLog;
 import org.jbpm.process.audit.JPAWorkingMemoryDbLogger;
 import org.jbpm.process.workitem.wsht.LocalHTWorkItemHandler;
 import org.jbpm.task.TaskService;
+import org.jbpm.task.User;
 import org.jbpm.task.service.TaskServiceSession;
 import org.jbpm.task.service.local.LocalTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,7 +143,7 @@ public class JbpmAPIUtil {
 					SystemEventListenerFactory.getSystemEventListener());
 		}
 		TaskServiceSession taskServiceSession = taskService.createSession();
-		
+		taskServiceSession.addUser(new User("manik"));
 		
 		LocalHTWorkItemHandler humanTaskHandler = new LocalHTWorkItemHandler(new LocalTaskService(taskService),ksession);
 		humanTaskHandler.setLocal(true);

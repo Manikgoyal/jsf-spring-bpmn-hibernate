@@ -15,10 +15,7 @@
   <itemDefinition id="_mapItem" />
   <itemDefinition id="_ManikItem" />
   <itemDefinition id="_isAvailableItem" />
-
-  <itemDefinition id="_7-mapItem" />
-  <itemDefinition id="_7-ManikItem" />
-  <itemDefinition id="_7-isAvailableItem" />
+  <itemDefinition id="null" />
 
   <process processType="Private" isExecutable="true" id="com.sample.bpmn.sampleHTformvariables" name="Sample Process" tns:packageName="defaultPackage" >
 
@@ -26,9 +23,10 @@
     <property id="map" itemSubjectRef="_mapItem"/>
     <property id="Manik" itemSubjectRef="_ManikItem"/>
     <property id="isAvailable" itemSubjectRef="_isAvailableItem"/>
+    <property id="result" itemSubjectRef="null"/>
 
     <!-- nodes -->
-    <startEvent id="_1" />
+    <startEvent id="_1"  isInterrupting="true"/>
     <scriptTask id="_jbpm-unique-2" name="Manik" scriptFormat="http://www.java.com/java" >
       <script>System.out.println("Hello Scipt file");</script>
     </scriptTask>
@@ -38,23 +36,79 @@
       <script>System.out.println("Not Again");</script>
     </scriptTask>
     <endEvent id="_jbpm-unique-6" name="End" />
-    <task id="_7" name="NotificationTask" tns:taskName="NotificationTask" >
+    <task id="_jbpm-unique-7" name="NotificationTask" tns:taskName="NotificationTask" >
       <ioSpecification>
-        <dataInput id="_7_statusKeyInput" name="statusKey" />
+        <dataInput id="_jbpm-unique-7_statusKeyInput" name="statusKey" />
+        <dataOutput id="_jbpm-unique-7_resultOutput" name="result" />
         <inputSet>
-          <dataInputRefs>_7_statusKeyInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-7_statusKeyInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_jbpm-unique-7_resultOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-7_statusKeyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Manik</from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-7_statusKeyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_jbpm-unique-7_resultOutput</sourceRef>
+        <targetRef>result</targetRef>
+      </dataOutputAssociation>
+    </task>
+    <scriptTask id="_jbpm-unique-8" name="Script" scriptFormat="http://www.java.com/java" >
+      <script>String Result = (String) context.getVariable("result");
+
+System.out.println("Result = "+Result);</script>
+    </scriptTask>
+    <userTask id="_jbpm-unique-0" name="User Task" >
+      <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <tns:script>System.out.println("calling LP user task");</tns:script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_jbpm-unique-0_CommentInput" name="Comment" />
+        <dataInput id="_jbpm-unique-0_ContentInput" name="Content" />
+        <dataInput id="_jbpm-unique-0_TaskNameInput" name="TaskName" />
+        <inputSet>
+          <dataInputRefs>_jbpm-unique-0_CommentInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-0_ContentInput</dataInputRefs>
+          <dataInputRefs>_jbpm-unique-0_TaskNameInput</dataInputRefs>
         </inputSet>
         <outputSet>
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
-        <targetRef>_7_statusKeyInput</targetRef>
+        <targetRef>_jbpm-unique-0_CommentInput</targetRef>
         <assignment>
-          <from xsi:type="tFormalExpression">Manik</from>
-          <to xsi:type="tFormalExpression">_7_statusKeyInput</to>
+          <from xsi:type="tFormalExpression">hello</from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-0_CommentInput</to>
         </assignment>
       </dataInputAssociation>
-    </task>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-0_ContentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">hello</from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-0_ContentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_jbpm-unique-0_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">manik</from>
+          <to xsi:type="tFormalExpression">_jbpm-unique-0_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>manik</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
 
     <!-- connections -->
     <sequenceFlow id="_jbpm-unique-4-_jbpm-unique-2" sourceRef="_jbpm-unique-4" targetRef="_jbpm-unique-2" name="Megha" tns:priority="1" >
@@ -66,7 +120,7 @@ else{
 return false;
 }</conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="_7-_jbpm-unique-3" sourceRef="_7" targetRef="_jbpm-unique-3" />
+    <sequenceFlow id="_jbpm-unique-8-_jbpm-unique-3" sourceRef="_jbpm-unique-8" targetRef="_jbpm-unique-3" />
     <sequenceFlow id="_1-_jbpm-unique-4" sourceRef="_1" targetRef="_jbpm-unique-4" />
     <sequenceFlow id="_jbpm-unique-4-_jbpm-unique-5" sourceRef="_jbpm-unique-4" targetRef="_jbpm-unique-5" name="Manik" tns:priority="1" >
       <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >String varName = (String)context.getVariable("Manik");
@@ -78,7 +132,9 @@ return false;
 }</conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="_jbpm-unique-5-_jbpm-unique-6" sourceRef="_jbpm-unique-5" targetRef="_jbpm-unique-6" />
-    <sequenceFlow id="_jbpm-unique-2-_7" sourceRef="_jbpm-unique-2" targetRef="_7" />
+    <sequenceFlow id="_jbpm-unique-0-_jbpm-unique-7" sourceRef="_jbpm-unique-0" targetRef="_jbpm-unique-7" />
+    <sequenceFlow id="_jbpm-unique-7-_jbpm-unique-8" sourceRef="_jbpm-unique-7" targetRef="_jbpm-unique-8" />
+    <sequenceFlow id="_jbpm-unique-2-_jbpm-unique-0" sourceRef="_jbpm-unique-2" targetRef="_jbpm-unique-0" />
 
   </process>
 
@@ -88,30 +144,36 @@ return false;
         <dc:Bounds x="88" y="16" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_jbpm-unique-2" >
-        <dc:Bounds x="16" y="177" width="80" height="48" />
+        <dc:Bounds x="73" y="181" width="80" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_jbpm-unique-3" >
-        <dc:Bounds x="92" y="377" width="48" height="48" />
+        <dc:Bounds x="87" y="461" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_jbpm-unique-4" >
         <dc:Bounds x="88" y="96" width="48" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_jbpm-unique-5" >
-        <dc:Bounds x="128" y="177" width="80" height="48" />
+        <dc:Bounds x="262" y="103" width="80" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="_jbpm-unique-6" >
-        <dc:Bounds x="294" y="264" width="48" height="48" />
+        <dc:Bounds x="367" y="103" width="48" height="48" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="_7" >
-        <dc:Bounds x="51" y="294" width="180" height="48" />
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-7" >
+        <dc:Bounds x="23" y="266" width="178" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-8" >
+        <dc:Bounds x="27" y="346" width="170" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_jbpm-unique-0" >
+        <dc:Bounds x="230" y="193" width="100" height="48" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-4-_jbpm-unique-2" >
         <di:waypoint x="112" y="120" />
-        <di:waypoint x="56" y="201" />
+        <di:waypoint x="113" y="205" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_7-_jbpm-unique-3" >
-        <di:waypoint x="141" y="318" />
-        <di:waypoint x="116" y="401" />
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-8-_jbpm-unique-3" >
+        <di:waypoint x="112" y="370" />
+        <di:waypoint x="111" y="485" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_1-_jbpm-unique-4" >
         <di:waypoint x="112" y="40" />
@@ -119,15 +181,23 @@ return false;
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-4-_jbpm-unique-5" >
         <di:waypoint x="112" y="120" />
-        <di:waypoint x="168" y="201" />
+        <di:waypoint x="302" y="127" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-5-_jbpm-unique-6" >
-        <di:waypoint x="168" y="201" />
-        <di:waypoint x="318" y="288" />
+        <di:waypoint x="302" y="127" />
+        <di:waypoint x="391" y="127" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-2-_7" >
-        <di:waypoint x="56" y="201" />
-        <di:waypoint x="141" y="318" />
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-0-_jbpm-unique-7" >
+        <di:waypoint x="280" y="217" />
+        <di:waypoint x="112" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-7-_jbpm-unique-8" >
+        <di:waypoint x="112" y="290" />
+        <di:waypoint x="112" y="370" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_jbpm-unique-2-_jbpm-unique-0" >
+        <di:waypoint x="113" y="205" />
+        <di:waypoint x="280" y="217" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
